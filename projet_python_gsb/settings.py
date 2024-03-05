@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """
 Django settings for projet_python_gsb project.
 
@@ -80,12 +82,13 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'gsb_python',
-        'USER': 'root',
-        'PASSWORD': 'root',
+        'USER': 'postgres',
+        'PASSWORD': 'votre_mot_de_passe',
         'HOST': 'localhost',
-        'PORT': '5432',  # Port par défaut de PostgreSQL
+        'PORT': '5432',
     }
 }
+
 
 
 # Password validation

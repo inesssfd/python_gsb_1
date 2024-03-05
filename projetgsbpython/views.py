@@ -1,18 +1,21 @@
+# -*- coding: utf-8 -*-
+
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from .forms import InscriptionForm, RapportForm
 from .models import Visiteur, Medecin, Rapport
 from django.shortcuts import get_object_or_404
+*
+
 
 def inscription(request):
     if request.method == 'POST':
         form = InscriptionForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('tableau_de_bord')
-            return redirect('inscription')  # Rechargez la page pour afficher le formulaire vide
+            visiteur = form.save()  # Sauvegarde du visiteur nouvellement créé
+            return redirect('tableau_de_bord', visiteur_id=visiteur.idvisiteur)  # Redirection avec l'ID du visiteur
     else:
-        form = InscriptionForm()  # Crée une instance du formulaire vide
+        form = InscriptionForm()
     return render(request, 'inscription.html', {'form': form})
 
 def connexion(request):
@@ -20,9 +23,15 @@ def connexion(request):
         login = request.POST.get('login')
         mdp = request.POST.get('mdp')
         try:
-            visiteur = Visiteur.objects.get(login=login, mdp=mdp)
-            messages.success(request, "Connexion réussie !")
-            return redirect('tableau_de_bord', visiteur_id=visiteur.idvisiteur)  # Redirection avec l'ID du visiteur
+            visiteurs = Visiteur.objects.filter(login=login, mdp=mdp)
+            if visiteurs.count() == 1:
+                visiteur = visiteurs.first()
+                messages.success(request, "Connexion réussie !")
+                return redirect('tableau_de_bord', visiteur_id=visiteur.idvisiteur)
+            elif visiteurs.count() == 0:
+                messages.error(request, "Identifiants invalides. Veuillez réessayer.")
+            else:
+                messages.error(request, "Plusieurs utilisateurs avec les mêmes identifiants. Veuillez contacter l'administrateur.")
         except Visiteur.DoesNotExist:
             messages.error(request, "Identifiants invalides. Veuillez réessayer.")
     return render(request, 'connexion.html')
@@ -35,7 +44,7 @@ def tableau_de_bord(request, visiteur_id):
         return render(request, '404.html')
 
     context = {
-        'visiteur_id': visiteur_id
+        'visiteur_id': visiteur_id  # Passer l'ID du visiteur au contexte
     }
     return render(request, 'tableau_de_bord.html', context)
 

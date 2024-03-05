@@ -1,0 +1,2 @@
+2024-02-29 18:54:24.858 CET [11484] LOG:  redirection des traces vers le processus de récupération des traces
+2024-02-29 18:54:24.858 CET [11484] ASTUCE :  Les prochaines traces apparaîtront dans le répertoire « log ».
