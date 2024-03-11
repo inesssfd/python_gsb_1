@@ -1,0 +1,77 @@
+body {
+    background-color: #f1faee; /* Noir */
+    color: #FFF; /* Texte blanc */
+    font-family: Arial, sans-serif; /* Police de caractère */
+    padding: 20px; /* Ajouter de l'espace autour du contenu */
+}
+
+h1 {
+    color: #1d3557; /* Vert */
+    text-align: center; /* Centrer horizontalement */
+}
+h2 {
+    color: #1d3557; /* Vert */
+    text-align: center; /* Centrer horizontalement */
+}
+/* Style pour chaque rapport */
+.rapport {
+    background-color: #1d3557; /* Gris foncé */
+    border-radius: 10px; /* Arrondir les coins */
+    padding: 20px; /* Ajouter de l'espace à l'intérieur de chaque rapport */
+    margin-bottom: 20px; /* Espacement entre chaque rapport */
+}
+
+/* Style pour chaque élément du rapport */
+.rapport p {
+    margin: 0; /* Supprimer les marges par défaut */
+}
+
+.bn30 {
+    border: 5em;
+    cursor: pointer;
+    outline: none;
+    font-size: 16px;
+    -webkit-transform: translate(0);
+    transform: translate(0);
+    background-image: linear-gradient(45deg, #4568dc, #b06ab3);
+    padding: 0.7em 2em;
+    border-radius: 65px;
+    box-shadow: 1px 1px 10px rgba(255, 255, 255, 0.438);
+    -webkit-transition: box-shadow 0.25s;
+    transition: box-shadow 0.25s;
+    color: white;
+    background-color: #1d3557;
+  }
+  
+  .bn30 .text {
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-image: linear-gradient(45deg, #4568dc, #b06ab3);
+  }
+  
+  .bn30:after {
+    content: "";
+    border-radius: 18px;
+    position: absolute;
+    margin: 4px;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: -1;
+    background: #0e0e10;
+  }
+  
+  .bn30:hover {
+    background-image: linear-gradient(-45deg, #4568dc, #b06ab3);
+    box-shadow: 0 12px 24px rgba(128, 128, 128, 0.1);
+  }
+  
+  .bn30:hover .text {
+    background-image: linear-gradient(-45deg, #4568dc, #b06ab3);
+  }
+  .button-container {
+    display: flex;
+    justify-content: center;
+}

@@ -7,10 +7,23 @@
 </head>
 <body>
     <h1>Tableau de bord</h1>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
     <p>ID du visiteur : {{ visiteur_id }}</p>
-    <div>
-        <a href="{% url 'create_rapport' visiteur_id %}"><button>Créer Rapport</button></a>
-
-    </div>
+    <a href="{% url 'create_rapport' visiteur_id %}" class="button-container">
+        <button class="bn30"><span class="text">Créer Rapport</span></button>
+    </a>
+    
+    
+    <h2>Rapports:</h2>
+    {% for rapport in rapports %}
+        <div class="rapport">
+            <p><strong>Date du rapport:</strong> {{ rapport.daterapport }}</p>
+            <p><strong>Motif:</strong> {{ rapport.motif }}</p>
+            <p><strong>Bilan:</strong> {{ rapport.bilan }}</p>
+            <p><strong>Médecin:</strong> {{ rapport.idmedecin.prenom }} {{ rapport.idmedecin.nom }}</p>
+            <!-- Ajoutez d'autres champs du rapport ici -->
+        </div>
+    {% endfor %}
 </body>
 </html>

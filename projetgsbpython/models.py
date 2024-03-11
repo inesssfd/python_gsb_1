@@ -35,12 +35,12 @@ class Medecin(models.Model):
 
 
 class Rapport(models.Model):
-    idrapport = models.BigAutoField(primary_key=True)
+    idrapport = models.AutoField(primary_key=True)
     daterapport = models.DateField()
     motif = models.CharField(max_length=50)
     bilan = models.TextField()
     idvisiteur = models.ForeignKey(Visiteur, on_delete=models.CASCADE, null=True, db_column='idvisiteur')
     idmedecin = models.ForeignKey(Medecin, on_delete=models.CASCADE, null=True, db_column='idmedecin')
-    
+
     class Meta:
         db_table = 'rapport'
