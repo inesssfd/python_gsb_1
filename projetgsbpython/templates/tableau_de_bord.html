@@ -17,13 +17,16 @@
     
     <h2>Rapports:</h2>
     {% for rapport in rapports %}
-        <div class="rapport">
-            <p><strong>Date du rapport:</strong> {{ rapport.daterapport }}</p>
-            <p><strong>Motif:</strong> {{ rapport.motif }}</p>
-            <p><strong>Bilan:</strong> {{ rapport.bilan }}</p>
-            <p><strong>Médecin:</strong> {{ rapport.idmedecin.prenom }} {{ rapport.idmedecin.nom }}</p>
-            <!-- Ajoutez d'autres champs du rapport ici -->
-        </div>
-    {% endfor %}
+    <div class="rapport">
+        <p><strong>Date du rapport:</strong> {{ rapport.daterapport }}</p>
+        <p><strong>Motif:</strong> {{ rapport.motif }}</p>
+        <p><strong>Bilan:</strong> {{ rapport.bilan }}</p>
+        <p><strong>Médecin:</strong> {{ rapport.idmedecin.prenom }} {{ rapport.idmedecin.nom }}</p>
+        <a href="{% url 'modifier_rapport' rapport.idrapport %}" class="button-container">
+            <button class="bn30"><span class="text">Modifier Rapport</span></button>
+        </a>
+    </div>
+{% endfor %}
+
 </body>
 </html>

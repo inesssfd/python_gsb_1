@@ -4,8 +4,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from .forms import InscriptionForm, RapportForm
 from .models import Visiteur, Medecin, Rapport
-from django.shortcuts import get_object_or_404
-
+from django.shortcuts import render, get_object_or_404
 def inscription(request):
     if request.method == 'POST':
         form = InscriptionForm(request.POST)
@@ -60,3 +59,7 @@ def create_rapport(request, visiteur_id):
     else:
         form = RapportForm(initial={'idvisiteur': visiteur_id})  # Passer l'ID du visiteur au formulaire
     return render(request, 'create_rapport.html', {'visiteur_id': visiteur_id, 'form': form})
+def modifier_rapport(request, rapport_id):
+    rapport = get_object_or_404(Rapport, idrapport=rapport_id)
+    # You need to add code for the form to modify the report here
+    return render(request, 'modifier_rapport.html', {'rapport': rapport})

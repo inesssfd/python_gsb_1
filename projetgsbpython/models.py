@@ -44,3 +44,25 @@ class Rapport(models.Model):
 
     class Meta:
         db_table = 'rapport'
+
+class Medicament(models.Model):
+    idmedicament = models.AutoField(primary_key=True)
+    nomcommercial = models.CharField(max_length=100)
+    famille_medicament = models.CharField(max_length=100)
+    composition = models.TextField()
+    effet = models.TextField()
+    contreindication = models.TextField()
+
+    class Meta:
+        db_table = 'medicament'
+
+class MedicamentRapport(models.Model):
+    idmedicament = models.ForeignKey(Medicament, on_delete=models.CASCADE, db_column='idmedicament')  # Assurez-vous que le nom de la colonne correspond à celui dans la table Medicament
+    idrapport = models.ForeignKey(Rapport, on_delete=models.CASCADE, db_column='idrapport')  # Assurez-vous que le nom de la colonne correspond à celui dans la table Rapport
+    quantite = models.IntegerField()
+
+    class Meta:
+        db_table = 'medicament_rapport'  # Nom de la table dans la base de données
+
+    def __str__(self):
+        return f"Medicament {self.idmedicament} dans le rapport {self.idrapport} - Quantité: {self.quantite}"
