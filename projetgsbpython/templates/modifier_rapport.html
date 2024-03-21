@@ -1,28 +1,17 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modifier Rapport</title>
-</head>
-<body>
-    <h1>Modifier Rapport</h1>
-    <form method="post">
-        {% csrf_token %}
-        <label for="daterapport">Date du rapport:</label><br>
-        <input type="date" id="daterapport" name="daterapport" value="{{ rapport.daterapport }}"><br><br>
-        
-        <label for="motif">Motif:</label><br>
-        <input type="text" id="motif" name="motif" value="{{ rapport.motif }}"><br><br>
-        
-        <label for="bilan">Bilan:</label><br>
-        <textarea id="bilan" name="bilan">{{ rapport.bilan }}</textarea><br><br>
+<form method="post">
+    {% csrf_token %}
+    <label for="daterapport">Date du rapport:</label><br>
+    <input type="date" id="daterapport" name="daterapport" value="{{ rapport.daterapport|date:'Y-m-d' }}"><br><br>
+    
+    <label for="motif">Motif:</label><br>
+    <input type="text" id="motif" name="motif" value="{{ rapport.motif }}"><br><br>
+    
+    <label for="bilan">Bilan:</label><br>
+    <textarea id="bilan" name="bilan">{{ rapport.bilan }}</textarea><br><br>
 
-        <label for="bilan">Medecin:</label><br>
-        <textarea id="bilan" name="bilan">{{ rapport.idmedecin.prenom }} {{ rapport.idmedecin.nom }}</textarea><br><br>
-        
-        
-        <input type="submit" value="Enregistrer les modifications">
-    </form>
-</body>
-</html>
+    <!-- Champ texte pour afficher l'ID du médecin du rapport -->
+    <label for="idmedecin">ID Médecin:</label><br>
+    <input type="text" id="idmedecin" name="idmedecin" value="{{ rapport.idmedecin_id }}" readonly><br><br>
+    
+    <input type="submit" value="Enregistrer les modifications">
+</form>

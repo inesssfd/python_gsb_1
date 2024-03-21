@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from django.shortcuts import render, redirect
 from .forms import InscriptionForm, RapportForm
@@ -59,7 +59,26 @@ def create_rapport(request, visiteur_id):
     else:
         form = RapportForm(initial={'idvisiteur': visiteur_id})  # Passer l'ID du visiteur au formulaire
     return render(request, 'create_rapport.html', {'visiteur_id': visiteur_id, 'form': form})
+
+
 def modifier_rapport(request, rapport_id):
     rapport = get_object_or_404(Rapport, idrapport=rapport_id)
-    # You need to add code for the form to modify the report here
-    return render(request, 'modifier_rapport.html', {'rapport': rapport})
+    
+    if request.method == 'POST':
+        form = RapportForm(request.POST, instance=rapport)
+        
+        if form.is_valid():
+            # Récupérer l'ID du médecin à partir du formulaire
+            id_medecin = request.POST.get('idmedecin')
+            form.instance.idmedecin_id = id_medecin
+            
+            form.save()
+            messages.success(request, "Rapport modifié avec succès.")
+            return redirect('tableau_de_bord', visiteur_id=rapport.idvisiteur_id)
+        else:
+            print(form.errors)  # Afficher les erreurs pour le débogage
+            messages.error(request, "Erreur lors de la modification du rapport. Veuillez réessayer.")
+    else:
+        form = RapportForm(instance=rapport)
+    
+    return render(request, 'modifier_rapport.html', {'rapport': rapport, 'form': form})
