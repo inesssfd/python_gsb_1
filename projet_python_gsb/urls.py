@@ -20,7 +20,7 @@ from django.contrib import admin
 from django.urls import path
 from projetgsbpython.views import inscription
 from django.urls import include
-from projetgsbpython.views import inscription, connexion, tableau_de_bord, create_rapport, modifier_rapport
+from projetgsbpython.views import inscription, connexion, tableau_de_bord, create_rapport, modifier_rapport,supprimer_rapport,index,profil_visiteur
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,4 +29,7 @@ urlpatterns = [
     path('connexion/', connexion, name='connexion'),
     path('create_rapport/<int:visiteur_id>/',create_rapport, name='create_rapport'),
     path('modifier_rapport/<int:rapport_id>/',modifier_rapport, name='modifier_rapport'),
+    path('supprimer_rapport/<int:rapport_id>/', supprimer_rapport, name='supprimer_rapport'),
+    path('index/', index, name='index'),
+    path('profil/<int:visiteur_id>/',profil_visiteur, name='profil_visiteur'),
 ]

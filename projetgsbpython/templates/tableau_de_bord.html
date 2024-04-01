@@ -10,10 +10,13 @@
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
     <p>ID du visiteur : {{ visiteur_id }}</p>
+    <a href="{% url 'profil_visiteur' visiteur_id %}" class="button-container">
+        <button class="bn30"><span class="text">Profil Visiteur</span></button>
+    </a>
+    <!-- Lien vers la page de création de rapport -->
     <a href="{% url 'create_rapport' visiteur_id %}" class="button-container">
         <button class="bn30"><span class="text">Créer Rapport</span></button>
     </a>
-    
     
     <h2>Rapports:</h2>
     {% for rapport in rapports %}
@@ -24,9 +27,14 @@
         <p><strong>Médecin:</strong> {{ rapport.idmedecin.prenom }} {{ rapport.idmedecin.nom }}</p>
         <a href="{% url 'modifier_rapport' rapport.idrapport %}" class="button-container">
             <button class="bn30"><span class="text">Modifier Rapport</span></button>
+            <form method="post" action="{% url 'supprimer_rapport' rapport.idrapport %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce rapport?')" class="bn30"><span class="text">Supprimer Rapport</span></button>
+            </form>
         </a>
-    </div>
-{% endfor %}
 
+        
+    </div>
+    {% endfor %}
 </body>
 </html>

@@ -14,7 +14,8 @@ class MedicamentAdmin(admin.ModelAdmin):
     list_display = ('idmedicament', 'nomcommercial', 'famille_medicament', 'composition', 'effet', 'contreindication')  # Champs à afficher dans la liste des objets Rapport
 class MedicamentRapportAdmin(admin.ModelAdmin):
     list_display = ('idmedicament', 'idrapport', 'quantite')  # Champs à afficher dans la liste des objets Rapport
-
+class MedicamentRapportAdmin(admin.ModelAdmin):
+    list_display = ('idmedicament_id', 'idrapport_id', 'quantite')  # Afficher les ID des médicaments et des rapports dans la liste des objets MedicamentRapport
 
 
 admin.site.register(Medecin, MedecinAdmin)

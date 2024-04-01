@@ -75,3 +75,122 @@ h2 {
     display: flex;
     justify-content: center;
 }
+/* static/css/styles.css */
+
+/* Style pour le formulaire */
+form {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* Style pour les champs de saisie */
+input[type="text"],
+input[type="password"],
+input[type="date"],
+select {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+/* Style pour le bouton */
+button[type="submit"] {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  float: right;
+}
+
+button[type="submit"]:hover {
+  background-color: #45a049;
+}
+
+/* Style pour les messages d'erreur */
+ul.messages {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+ul.messages li {
+  color: red;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+label {
+  color: #333; /* Couleur du texte pour les libellés */
+}
+label {
+  color: black; /* Couleur du texte pour les libellés */
+}
+body {
+  color: #000000;
+  font-family: Arial, sans-serif;
+}
+/* styles.css */
+
+/* Reset CSS */
+html, body, h1, p, button {
+  margin: 0;
+  padding: 0;
+}
+
+/* Global styles */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #F9E8C9;
+  color: #F9E8C9;
+  padding: 20px;
+  text-align: center;
+}
+
+h1 {
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+p {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+  h1 {
+      font-size: 24px;
+  }
+
+  p {
+      font-size: 16px;
+  }
+
+  button {
+      font-size: 14px;
+  }
+}

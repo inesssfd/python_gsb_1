@@ -3,7 +3,8 @@
 from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
-from .models import Rapport, Medecin, Visiteur
+from .models import Rapport, Medecin, Visiteur,Medicament
+from django.core.exceptions import ValidationError
 class InscriptionForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -17,8 +18,24 @@ class InscriptionForm(forms.ModelForm):
             'dateembauchevisiteur': forms.DateInput(attrs={'type': 'date'}),
         }
 
-        
+    def clean_login(self):
+        login = self.cleaned_data.get('login')
+        try:
+            # Vérifie s'il existe déjà un visiteur avec le même login
+            Visiteur.objects.get(login=login)
+            raise ValidationError("Ce login est déjà utilisé. Veuillez en choisir un autre.")
+        except Visiteur.DoesNotExist:
+            # Si aucun visiteur avec ce login n'existe, alors le login est unique
+            return login
+# Dans forms.py
+
+# Dans forms.py
+# Dans forms.py
+
 class RapportForm(forms.ModelForm):
+    quantite = forms.IntegerField(min_value=1)  # Ajouter un champ pour la quantité
+    medicament = forms.ModelChoiceField(queryset=Medicament.objects.all(), empty_label=None)  # Champ de sélection des médicaments
+
     class Meta:
         model = Rapport
         fields = ['idvisiteur', 'daterapport', 'motif', 'bilan', 'idmedecin']

@@ -1,0 +1,16 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accueil</title>
+</head>
+<body>
+    <h1>Bienvenue sur notre site</h1>
+    <p>Connectez-vous ou inscrivez-vous pour accéder à votre tableau de bord.</p>
+    <a href="{% url 'connexion' %}"><button>Se connecter</button></a>
+    <a href="{% url 'inscription' %}"><button>S'inscrire</button></a>
+</body>
+</html>
