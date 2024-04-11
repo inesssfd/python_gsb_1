@@ -55,3 +55,9 @@ class RapportForm(forms.ModelForm):
         medication_choices = [(medication.idmedicament, medication.nomcommercial) for medication in Medicament.objects.all()]
         self.fields['medicament'].choices = medication_choices
 
+
+
+class VisiteurForm(forms.ModelForm):
+    class Meta:
+        model = Visiteur
+        fields = ['nomvisiteur', 'prenomvisiteur', 'login', 'mdp', 'adressevisiteur', 'villevisiteur', 'cp_visiteur', 'dateembauchevisiteur']

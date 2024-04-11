@@ -39,7 +39,7 @@ class Rapport(models.Model):
     daterapport = models.DateField()
     motif = models.CharField(max_length=50)
     bilan = models.TextField()
-    idvisiteur = models.ForeignKey(Visiteur, on_delete=models.CASCADE, null=True, db_column='idvisiteur')
+    idvisiteur = models.ForeignKey(Visiteur, on_delete=models.CASCADE, db_column='idvisiteur')
     idmedecin = models.ForeignKey(Medecin, on_delete=models.CASCADE, null=True, db_column='idmedecin')
 
     class Meta:

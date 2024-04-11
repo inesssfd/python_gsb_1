@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
-from django.shortcuts import render, redirect
-from .forms import InscriptionForm, RapportForm
+from django.shortcuts import render, get_object_or_404, redirect
+from .forms import InscriptionForm, RapportForm, VisiteurForm
 from .models import Visiteur, Medecin, Rapport,Medicament,MedicamentRapport
-from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django import forms
 from django.http import HttpResponseRedirect
@@ -128,45 +127,34 @@ def profil_visiteur(request, visiteur_id):
     return render(request, 'profil_visiteur.html', context)
 
 
-def modifier_profil_visiteur(request, visiteur_id):
+def supprimer_visiteur(request, visiteur_id):
+    # Récupérer le visiteur à supprimer
     visiteur = get_object_or_404(Visiteur, idvisiteur=visiteur_id)
-
+    
     if request.method == 'POST':
-        # Récupérer les données du formulaire
-        nom = request.POST.get('nom')
-        prenom = request.POST.get('prenom')
-        login = request.POST.get('login')
-        adresse = request.POST.get('adresse')
-        ville = request.POST.get('ville')
-        cp = request.POST.get('cp')
-        date_embauche = request.POST.get('dateembauche')
+        # Supprimer le visiteur
+        visiteur.delete()
+        
+        # Ajouter un message de succès
+        messages.success(request, "Le visiteur a été supprimé avec succès.")
+        
+        # Rediriger vers une page appropriée (par exemple, la page d'accueil)
+        return redirect('index')
+    
+    # Si la méthode de la requête n'est pas POST, afficher un message d'erreur
+    messages.error(request, "La suppression du visiteur a échoué. Veuillez réessayer.")
+    return redirect('profil_visiteur', visiteur_id=visiteur_id)  # Rediriger vers le profil du visiteur
 
-        # Afficher les données récupérées pour le débogage
-        print("Données du formulaire :")
-        print("Nom :", nom)
-        print("Prénom :", prenom)
-        print("Login :", login)
-        print("Adresse :", adresse)
-        print("Ville :", ville)
-        print("Code postal :", cp)
-        print("Date d'embauche :", date_embauche)
 
-        # Mettre à jour les données du visiteur
-        visiteur.nomvisiteur = nom
-        visiteur.prenomvisiteur = prenom
-        visiteur.login = login
-        visiteur.adressevisiteur = adresse
-        visiteur.villevisiteur = ville
-        visiteur.cp_visiteur = cp
-        visiteur.dateembauchevisiteur = date_embauche
-        visiteur.save()
 
-        # Rediriger vers la page de profil avec un message de succès
-        messages.success(request, "Profil mis à jour avec succès.")
-        return redirect('profil_visiteur', visiteur_id=visiteur_id)
-
-    # Si la méthode de la requête n'est pas POST, afficher le formulaire avec les données actuelles
-    context = {
-        'visiteur': visiteur,
-    }
-    return render(request, 'profil_visiteur.html', context)
+def modifier_visiteur(request, visiteur_id):
+    visiteur = get_object_or_404(Visiteur, idvisiteur=visiteur_id)
+    if request.method == 'POST':
+        form = VisiteurForm(request.POST, instance=visiteur)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Les informations du visiteur ont été mises à jour avec succès.")
+            return redirect('profil_visiteur', visiteur_id=visiteur_id)
+    else:
+        form = VisiteurForm(instance=visiteur)
+    return render(request, 'modifier_visiteur.html', {'form': form})
