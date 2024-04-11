@@ -27,14 +27,11 @@ class InscriptionForm(forms.ModelForm):
         except Visiteur.DoesNotExist:
             # Si aucun visiteur avec ce login n'existe, alors le login est unique
             return login
-# Dans forms.py
 
-# Dans forms.py
-# Dans forms.py
 
 class RapportForm(forms.ModelForm):
-    quantite = forms.IntegerField(min_value=1)  # Ajouter un champ pour la quantité
-    medicament = forms.ModelChoiceField(queryset=Medicament.objects.all(), empty_label=None)  # Champ de sélection des médicaments
+    quantite = forms.IntegerField(min_value=1)  # Add a field for quantity
+    medicament = forms.ModelChoiceField(queryset=Medicament.objects.all(), empty_label=None)  # Medication selection field
 
     class Meta:
         model = Rapport
@@ -47,9 +44,14 @@ class RapportForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(RapportForm, self).__init__(*args, **kwargs)
         self.fields['idmedecin'].queryset = Medecin.objects.all()
-        self.fields['idvisiteur'].widget.attrs['readonly'] = True  # Rendre le champ en lecture seule
-        self.fields['idvisiteur'].disabled = True  # Rendre le champ désactivé
+        self.fields['idvisiteur'].widget.attrs['readonly'] = True  # Make the field read-only
+        self.fields['idvisiteur'].disabled = True  # Disable the field
 
-        # Définir une liste de tuples (ID du médecin, nom du médecin) pour le champ idmedecin
-        medecin_choices = [(medecin.idmedecin, f"{medecin.nom} {medecin.prenom}") for medecin in Medecin.objects.all()]
-        self.fields['idmedecin'].choices = medecin_choices
+        # Define a list of tuples (ID of the doctor, name of the doctor) for the idmedecin field
+        doctor_choices = [(doctor.idmedecin, f"{doctor.nom} {doctor.prenom}") for doctor in Medecin.objects.all()]
+        self.fields['idmedecin'].choices = doctor_choices
+
+        # Define a list of tuples (ID of the medication, name of the medication) for the medicament field
+        medication_choices = [(medication.idmedicament, medication.nomcommercial) for medication in Medicament.objects.all()]
+        self.fields['medicament'].choices = medication_choices
+

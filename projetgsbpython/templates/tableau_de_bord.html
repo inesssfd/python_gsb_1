@@ -6,6 +6,17 @@
     <title>Tableau de bord</title>
 </head>
 <body>
+    <form method="get" action="{% url 'tableau_de_bord' visiteur_id %}">
+        <label for="idmedecin">Sélectionnez un médecin :</label>
+        <select name="id_medecin" id="id_medecin">
+            <option value="">Tous les médecins</option>
+            {% for medecin in medecins %}
+                <option value="{{ medecin.idmedecin }}">{{ medecin.nom }}</option>
+            {% endfor %}
+        </select>         
+        <button type="submit">Filtrer</button>
+    </form>    
+    
     <h1>Tableau de bord</h1>
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
@@ -25,6 +36,13 @@
         <p><strong>Motif:</strong> {{ rapport.motif }}</p>
         <p><strong>Bilan:</strong> {{ rapport.bilan }}</p>
         <p><strong>Médecin:</strong> {{ rapport.idmedecin.prenom }} {{ rapport.idmedecin.nom }}</p>
+        <!-- Boucle sur les médicaments associés à ce rapport -->
+        <p><strong>Médicaments:</strong></p>
+        <ul>
+            {% for mr in rapport.medicamentrapport_set.all %}
+            <li>{{ mr.idmedicament.nomcommercial }} - Quantité: {{ mr.quantite }}</li>
+            {% endfor %}
+        </ul>
         <a href="{% url 'modifier_rapport' rapport.idrapport %}" class="button-container">
             <button class="bn30"><span class="text">Modifier Rapport</span></button>
             <form method="post" action="{% url 'supprimer_rapport' rapport.idrapport %}" style="display:inline;">
@@ -32,8 +50,6 @@
                 <button type="submit" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce rapport?')" class="bn30"><span class="text">Supprimer Rapport</span></button>
             </form>
         </a>
-
-        
     </div>
     {% endfor %}
 </body>

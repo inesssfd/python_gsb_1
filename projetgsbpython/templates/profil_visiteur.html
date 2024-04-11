@@ -2,19 +2,28 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profil du visiteur</title>
 </head>
 <body>
     <h1>Profil du visiteur</h1>
-    <div class="rapport">
-    <p><strong>Nom:</strong> {{ visiteur.nomvisiteur }}</p>
-    <p><strong>Prénom:</strong> {{ visiteur.prenomvisiteur }}</p>
-    <p><strong>Login:</strong> {{ visiteur.login }}</p>
-    <p><strong>Adresse:</strong> {{ visiteur.adressevisiteur }}, {{ visiteur.villevisiteur }}, {{ visiteur.cp_visiteur }}</p>
-    <p><strong>Date d'embauche:</strong> {{ visiteur.dateembauchevisiteur }}</p>
-</div>
+    <form method="post">
+        {% csrf_token %}
+        <label for="nom">Nom:</label>
+        <input type="text" id="nom" name="nom" value="{{ visiteur.nomvisiteur }}">
+        <label for="prenom">Prénom:</label>
+        <input type="text" id="prenom" name="prenom" value="{{ visiteur.prenomvisiteur }}">
+        <label for="login">Login:</label>
+        <input type="text" id="login" name="login" value="{{ visiteur.login }}">
+        <label for="adresse">Adresse:</label>
+        <input type="text" id="adresse" name="adresse" value="{{ visiteur.adressevisiteur }}">
+        <label for="ville">Ville:</label>
+        <input type="text" id="ville" name="ville" value="{{ visiteur.villevisiteur }}">
+        <label for="cp">Code postal:</label>
+        <input type="text" id="cp" name="cp" value="{{ visiteur.cp_visiteur }}">
+        <label for="dateembauche">Date d'embauche:</label>
+        <input type="date" id="dateembauche" name="dateembauche" value="{{ visiteur.dateembauchevisiteur }}">
+        <button type="submit">Enregistrer les modifications</button>
+    </form>
 </body>
 </html>

@@ -6,6 +6,7 @@ from .forms import InscriptionForm, RapportForm
 from .models import Visiteur, Medecin, Rapport,Medicament,MedicamentRapport
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
+from django import forms
 from django.http import HttpResponseRedirect
 def inscription(request):
     if request.method == 'POST':
@@ -35,23 +36,22 @@ def connexion(request):
     return render(request, 'connexion.html')
 
 def tableau_de_bord(request, visiteur_id):
-    try:
-        visiteur = Visiteur.objects.get(idvisiteur=visiteur_id)
-        # Récupérer tous les rapports associés à l'utilisateur actuel
-        rapports = Rapport.objects.filter(idvisiteur=visiteur)
-    except Visiteur.DoesNotExist:
-        # Gérer le cas où l'ID du visiteur n'existe pas
-        return render(request, '404.html')
-
+    # Récupérer la valeur de l'ID du médecin sélectionné (si disponible)
+    id_medecin = request.GET.get('id_medecin')
+    
+    # Si un médecin est sélectionné, récupérer tous les rapports associés à ce médecin
+    if id_medecin:
+        rapports = Rapport.objects.filter(idmedecin=id_medecin)
+    else:
+        # Si aucun médecin n'est sélectionné, récupérer tous les rapports associés à l'utilisateur actuel
+        rapports = Rapport.objects.filter(idvisiteur=visiteur_id)
+    
     context = {
         'visiteur_id': visiteur_id,  # Passer l'ID du visiteur au contexte
-        'rapports': rapports  # Passer les rapports associés au contexte
+        'rapports': rapports,  # Passer les rapports associés au contexte
+        'medecins': Medecin.objects.all()  # Passer tous les médecins pour la liste déroulante
     }
     return render(request, 'tableau_de_bord.html', context)
-
-# Dans views.py
-
-# Dans views.py
 
 def create_rapport(request, visiteur_id):
     if request.method == 'POST':
@@ -76,26 +76,38 @@ def create_rapport(request, visiteur_id):
 
 def modifier_rapport(request, rapport_id):
     rapport = get_object_or_404(Rapport, idrapport=rapport_id)
+    medicament_rapports = rapport.medicamentrapport_set.all()
+    all_medicaments = Medicament.objects.all()  # Récupérer tous les médicaments de la base de données
     
     if request.method == 'POST':
-        form = RapportForm(request.POST, instance=rapport)
-        
+        form = RapportForm(request.POST, instance=rapport)  # Création du formulaire avec les données POST et l'instance du rapport existant
+
         if form.is_valid():
-            # Récupérer l'ID du médecin à partir du formulaire
             id_medecin = request.POST.get('idmedecin')
-            form.instance.idmedecin_id = id_medecin
-            
+            rapport.idmedecin_id = id_medecin
+            form.save(commit=False)
             form.save()
+
+            # Mettre à jour les quantités des médicaments associés à ce rapport
+            for medicament_rapport in medicament_rapports:
+                quantite = request.POST.get(f'quantite_{medicament_rapport.id}')
+                medicament_rapport.quantite = quantite
+
+                # Mettre à jour l'ID du médicament dans MedicamentRapport
+                medicament_id = request.POST.get(f'medicament_{medicament_rapport.id}')  # Assurez-vous d'avoir un champ nommé medicament_ID pour chaque médicament_rapport
+                medicament_rapport.idmedicament_id = medicament_id
+
+                medicament_rapport.save()
+
             messages.success(request, "Rapport modifié avec succès.")
             return redirect('tableau_de_bord', visiteur_id=rapport.idvisiteur_id)
         else:
-            print(form.errors)  # Afficher les erreurs pour le débogage
+            print(form.errors)
             messages.error(request, "Erreur lors de la modification du rapport. Veuillez réessayer.")
     else:
-        form = RapportForm(instance=rapport)
-    
-    return render(request, 'modifier_rapport.html', {'rapport': rapport, 'form': form})
+        form = RapportForm(instance=rapport)  # Création du formulaire avec l'instance du rapport existant
 
+    return render(request, 'modifier_rapport.html', {'rapport': rapport, 'form': form, 'medicament_rapports': medicament_rapports, 'all_medicaments': all_medicaments})
 
 def supprimer_rapport(request, rapport_id):
     rapport = get_object_or_404(Rapport, idrapport=rapport_id)
@@ -116,3 +128,45 @@ def profil_visiteur(request, visiteur_id):
     return render(request, 'profil_visiteur.html', context)
 
 
+def modifier_profil_visiteur(request, visiteur_id):
+    visiteur = get_object_or_404(Visiteur, idvisiteur=visiteur_id)
+
+    if request.method == 'POST':
+        # Récupérer les données du formulaire
+        nom = request.POST.get('nom')
+        prenom = request.POST.get('prenom')
+        login = request.POST.get('login')
+        adresse = request.POST.get('adresse')
+        ville = request.POST.get('ville')
+        cp = request.POST.get('cp')
+        date_embauche = request.POST.get('dateembauche')
+
+        # Afficher les données récupérées pour le débogage
+        print("Données du formulaire :")
+        print("Nom :", nom)
+        print("Prénom :", prenom)
+        print("Login :", login)
+        print("Adresse :", adresse)
+        print("Ville :", ville)
+        print("Code postal :", cp)
+        print("Date d'embauche :", date_embauche)
+
+        # Mettre à jour les données du visiteur
+        visiteur.nomvisiteur = nom
+        visiteur.prenomvisiteur = prenom
+        visiteur.login = login
+        visiteur.adressevisiteur = adresse
+        visiteur.villevisiteur = ville
+        visiteur.cp_visiteur = cp
+        visiteur.dateembauchevisiteur = date_embauche
+        visiteur.save()
+
+        # Rediriger vers la page de profil avec un message de succès
+        messages.success(request, "Profil mis à jour avec succès.")
+        return redirect('profil_visiteur', visiteur_id=visiteur_id)
+
+    # Si la méthode de la requête n'est pas POST, afficher le formulaire avec les données actuelles
+    context = {
+        'visiteur': visiteur,
+    }
+    return render(request, 'profil_visiteur.html', context)
