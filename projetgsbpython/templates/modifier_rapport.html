@@ -1,24 +1,18 @@
-<form method="post">
-    {% csrf_token %}
-    <label for="daterapport">Date du rapport:</label><br>
-    <input type="date" id="daterapport" name="daterapport" value="{{ rapport.daterapport|date:'Y-m-d' }}"><br><br>
-    
-    <label for="motif">Motif:</label><br>
-    <input type="text" id="motif" name="motif" value="{{ rapport.motif }}"><br><br>
-    
-    <label for="bilan">Bilan:</label><br>
-    <textarea id="bilan" name="bilan">{{ rapport.bilan }}</textarea><br><br>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifier Rapport</title>
+</head>
+<body>
+    <h2>Modifier Rapport</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
 
-    <!-- Champ texte pour afficher l'ID du médecin du rapport -->
-    <label for="idmedecin">ID Médecin:</label><br>
-    <input type="text" id="idmedecin" name="idmedecin" value="{{ rapport.idmedecin_id }}" readonly><br><br>
-    {% for medicament_rapport in rapport.medicamentrapport_set.all %}
-    <label for="medicament_rapport{{ idmedicament }}">Médicament:</label><br>
-    <input type="text" id="idmedicament" name="idmedicament" value="{{ medicament_rapport.idmedicament }}" readonly>
-
-    <label for="quantite">Quantité:</label>
-    <input type="number" id="quantite" name="quantite" value="{{ medicament_rapport.quantite }}">
-    {% endfor %}
-    
-    <input type="submit" value="Enregistrer les modifications">
-</form>
+        <!-- Bouton de soumission -->
+        <button type="submit">Enregistrer les modifications</button>
+    </form>
+</body>
+</html>

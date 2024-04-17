@@ -18,9 +18,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from projetgsbpython.views import inscription
 from django.urls import include
-from projetgsbpython.views import inscription, connexion, tableau_de_bord, create_rapport, modifier_rapport,supprimer_rapport,index,profil_visiteur,supprimer_visiteur,modifier_visiteur
+from projetgsbpython.views import inscription, connexion, tableau_de_bord, create_rapport,supprimer_rapport,index,profil_visiteur,supprimer_visiteur,modifier_visiteur,modifier_rapport,liste_medecins,deconnexion
 
 
 urlpatterns = [
@@ -29,10 +28,12 @@ urlpatterns = [
     path('inscription/', inscription, name='inscription'),
     path('connexion/', connexion, name='connexion'),
     path('create_rapport/<int:visiteur_id>/',create_rapport, name='create_rapport'),
-    path('modifier_rapport/<int:rapport_id>/',modifier_rapport, name='modifier_rapport'),
     path('supprimer_rapport/<int:rapport_id>/', supprimer_rapport, name='supprimer_rapport'),
     path('index/', index, name='index'),
     path('profil/<int:visiteur_id>/',profil_visiteur, name='profil_visiteur'),
     path('profil/<int:visiteur_id>/supprimer/', supprimer_visiteur, name='supprimer_visiteur'),
-    path('profil/<int:visiteur_id>/modifier/', modifier_visiteur, name='modifier_visiteur'), 
+    path('profil/<int:visiteur_id>/modifier/', modifier_visiteur, name='modifier_visiteur'),
+    path('rapport/<int:rapport_id>/modifier/', modifier_rapport, name='modifier_rapport'),  # Route pour modifier un rapport
+    path('liste_medecins/', liste_medecins, name='liste_medecins'),
+    path('deconnexion/', deconnexion, name='deconnexion'),
 ]

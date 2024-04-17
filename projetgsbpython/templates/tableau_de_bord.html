@@ -3,32 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    {% load static %}
     <title>Tableau de bord</title>
 </head>
 <body>
-    <form method="get" action="{% url 'tableau_de_bord' visiteur_id %}">
-        <label for="idmedecin">Sélectionnez un médecin :</label>
-        <select name="id_medecin" id="id_medecin">
-            <option value="">Tous les médecins</option>
-            {% for medecin in medecins %}
-                <option value="{{ medecin.idmedecin }}">{{ medecin.nom }}</option>
-            {% endfor %}
-        </select>         
-        <button type="submit">Filtrer</button>
-    </form>    
-    
-    <h1>Tableau de bord</h1>
-    {% load static %}
+    <header>
+        <h1>Tableau de bord</h1>
+        <form method="get" action="{% url 'tableau_de_bord' visiteur_id %}">
+            <label for="idmedecin">Rechercher un médecin :</label>
+            <select name="id_medecin" id="id_medecin">
+                <option value="">Tous les médecins</option>
+                {% for medecin in medecins %}
+                    <option value="{{ medecin.idmedecin }}">{{ medecin.nom }}</option>
+                {% endfor %}
+            </select>         
+            <button type="submit" class="recherche-button">
+                <img src="{% static 'recherche.png' %}" alt="Votre Image" style="width: 30px; height: 30px;">
+            </button>
+        </form> 
+        <a href="{% url 'deconnexion' %}">Déconnexion</a>
+
+        <a href="{% url 'liste_medecins' %}" style="position: absolute; top: 10px; right: 140px;">
+            <img src="{% static 'docteur.png' %}" alt="Voir tous les médecins" style="width: 30px; height: 30px;">
+        </a>
+        <!-- Bouton pour accéder au profil du visiteur -->
+        <a href="{% url 'profil_visiteur' visiteur_id %}" style="position: absolute; top: 10px; right: 20px;">
+            <img src="{% static 'profil-de-lutilisateur.png' %}" alt="Profil Visiteur" style="width: 30px; height: 30px; display: block; margin: auto;">
+        </a>
+        
+        <!-- Bouton pour créer un rapport -->
+        <a href="{% url 'create_rapport' visiteur_id %}" style="position: absolute; top: 10px; right: 80px;">
+            <img src="{% static 'signe-plus.png' %}" alt="Créer Rapport" style="width: 30px; height: 30px; display: block; margin: auto;">
+        </a>
+
+        <!-- Bouton de déconnexion -->
+
+    </header>
+
+    <!-- Styles CSS -->
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
-    <p>ID du visiteur : {{ visiteur_id }}</p>
-    <a href="{% url 'profil_visiteur' visiteur_id %}" class="button-container">
-        <button class="bn30"><span class="text">Profil Visiteur</span></button>
-    </a>
-    <!-- Lien vers la page de création de rapport -->
-    <a href="{% url 'create_rapport' visiteur_id %}" class="button-container">
-        <button class="bn30"><span class="text">Créer Rapport</span></button>
-    </a>
     
+    <!-- Section des rapports -->
     <h2>Rapports:</h2>
     {% for rapport in rapports %}
     <div class="rapport">
@@ -43,13 +59,17 @@
             <li>{{ mr.idmedicament.nomcommercial }} - Quantité: {{ mr.quantite }}</li>
             {% endfor %}
         </ul>
-        <a href="{% url 'modifier_rapport' rapport.idrapport %}" class="button-container">
-            <button class="bn30"><span class="text">Modifier Rapport</span></button>
-            <form method="post" action="{% url 'supprimer_rapport' rapport.idrapport %}" style="display:inline;">
-                {% csrf_token %}
-                <button type="submit" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce rapport?')" class="bn30"><span class="text">Supprimer Rapport</span></button>
-            </form>
-        </a>
+
+        <form method="post" action="{% url 'supprimer_rapport' rapport.idrapport %}" class="button-container" >
+            {% csrf_token %}
+            <a href="{% url 'supprimer_rapport' rapport.idrapport %}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce rapport?')" class="btn">
+                <img src="{% static 'supprimer.png' %}" alt="Supprimer Rapport" style="width: 40px; height: 40px;">
+            </a>
+            <a href="{% url 'modifier_rapport' rapport.idrapport %}" class="modifier-button">
+                <img src="{% static 'editer.png' %}" alt="Modifier Rapport" style="width: 40px; height: 40px;">
+            </a>
+        
+        </form>
     </div>
     {% endfor %}
 </body>

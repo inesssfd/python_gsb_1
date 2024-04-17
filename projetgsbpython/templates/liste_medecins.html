@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des médecins</title>
+</head>
+<body>
+    <h1>Liste des médecins</h1>
+
+    <!-- Formulaire de recherche -->
+    <form action="{% url 'liste_medecins' %}" method="GET">
+        <label for="idmedecin">Sélectionner un médecin :</label>
+        <select name="idmedecin" id="idmedecin">
+            <option value="">Tous les médecins</option>
+            {% for medecin in medecins %}
+                <option value="{{ medecin.idmedecin }}">{{ medecin.nom }} {{ medecin.prenom }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Rechercher</button>
+    </form>
+
+    <ul>
+        {% for medecin in medecins %}
+            <li>
+                <strong>Nom :</strong> {{ medecin.nom }}<br>
+                <strong>Prénom :</strong> {{ medecin.prenom }}<br>
+                <strong>Adresse :</strong> {{ medecin.adresse }}<br>
+                <strong>Ville :</strong> {{ medecin.ville }}<br>
+                <strong>Code Postal :</strong> {{ medecin.cp_medecin }}<br>
+                <strong>Téléphone :</strong> {{ medecin.tel }}<br>
+                <strong>Spécialiste Complémentaire :</strong> {{ medecin.specialistecomplementaire }}<br>
+                <strong>Département :</strong> {{ medecin.departement }}<br>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

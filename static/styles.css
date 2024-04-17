@@ -1,196 +1,102 @@
+/* Style général */
 body {
-    background-color: #f1faee; /* Noir */
-    color: #FFF; /* Texte blanc */
-    font-family: Arial, sans-serif; /* Police de caractère */
-    padding: 20px; /* Ajouter de l'espace autour du contenu */
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
 }
 
-h1 {
-    color: #1d3557; /* Vert */
-    text-align: center; /* Centrer horizontalement */
-}
-h2 {
-    color: #1d3557; /* Vert */
-    text-align: center; /* Centrer horizontalement */
-}
-/* Style pour chaque rapport */
-.rapport {
-    background-color: #1d3557; /* Gris foncé */
-    border-radius: 10px; /* Arrondir les coins */
-    padding: 20px; /* Ajouter de l'espace à l'intérieur de chaque rapport */
-    margin-bottom: 20px; /* Espacement entre chaque rapport */
-}
-
-/* Style pour chaque élément du rapport */
-.rapport p {
-    margin: 0; /* Supprimer les marges par défaut */
-}
-
-.bn30 {
-    border: 5em;
-    cursor: pointer;
-    outline: none;
-    font-size: 16px;
-    -webkit-transform: translate(0);
-    transform: translate(0);
-    background-image: linear-gradient(45deg, #4568dc, #b06ab3);
-    padding: 0.7em 2em;
-    border-radius: 65px;
-    box-shadow: 1px 1px 10px rgba(255, 255, 255, 0.438);
-    -webkit-transition: box-shadow 0.25s;
-    transition: box-shadow 0.25s;
-    color: white;
-    background-color: #1d3557;
-  }
-  
-  .bn30 .text {
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-image: linear-gradient(45deg, #4568dc, #b06ab3);
-  }
-  
-  .bn30:after {
-    content: "";
-    border-radius: 18px;
-    position: absolute;
-    margin: 4px;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    z-index: -1;
-    background: #0e0e10;
-  }
-  
-  .bn30:hover {
-    background-image: linear-gradient(-45deg, #4568dc, #b06ab3);
-    box-shadow: 0 12px 24px rgba(128, 128, 128, 0.1);
-  }
-  
-  .bn30:hover .text {
-    background-image: linear-gradient(-45deg, #4568dc, #b06ab3);
-  }
-  .button-container {
-    display: flex;
-    justify-content: center;
-}
-/* static/css/styles.css */
-
-/* Style pour le formulaire */
-form {
-  max-width: 400px;
+.container {
+  max-width: 800px;
   margin: 0 auto;
-}
-
-/* Style pour les champs de saisie */
-input[type="text"],
-input[type="password"],
-input[type="date"],
-select {
-  width: 100%;
-  padding: 10px;
-  margin: 5px 0;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-}
-
-/* Style pour le bouton */
-button[type="submit"] {
-  background-color: #4CAF50;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  float: right;
-}
-
-button[type="submit"]:hover {
-  background-color: #45a049;
-}
-
-/* Style pour les messages d'erreur */
-ul.messages {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-}
-
-ul.messages li {
-  color: red;
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-label {
-  color: #333; /* Couleur du texte pour les libellés */
-}
-label {
-  color: black; /* Couleur du texte pour les libellés */
-}
-body {
-  color: #000000;
-  font-family: Arial, sans-serif;
-}
-/* styles.css */
-
-/* Reset CSS */
-html, body, h1, p, button {
-  margin: 0;
-  padding: 0;
-}
-
-/* Global styles */
-body {
-  font-family: Arial, sans-serif;
-  background-color: #F9E8C9;
-  color: #F9E8C9;
   padding: 20px;
-  text-align: center;
 }
 
-h1 {
-  font-size: 28px;
+/* Style du formulaire */
+form {
   margin-bottom: 20px;
 }
 
-p {
-  font-size: 18px;
-  margin-bottom: 20px;
+label {
+  font-weight: bold;
 }
 
-button {
-  padding: 10px 20px;
+select, button {
+  padding: 10px;
   font-size: 16px;
-  background-color: #007bff;
-  color: #fff;
   border: none;
   border-radius: 5px;
+  background-color: #e6e6e6;
+  margin-right: 10px;
+}
+
+button[type="submit"]:not(.recherche-button) {
+  background-color: #007bff;
+  color: #fff;
   cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
-button:hover {
-  background-color: #0056b3;
+
+.recherche-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
 }
 
-a {
-  text-decoration: none;
-  color: inherit;
+
+/* Style des rapports */
+.rapport {
+  background-color: #fff;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* Responsiveness */
-@media (max-width: 768px) {
-  h1 {
-      font-size: 24px;
-  }
+.rapport p {
+  margin: 0 0 10px 0;
+}
 
-  p {
-      font-size: 16px;
-  }
+.rapport strong {
+  font-weight: bold;
+}
 
-  button {
-      font-size: 14px;
-  }
+.rapport ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.rapport li {
+  margin-bottom: 5px;
+}
+
+/* Style des boutons */
+/* Style des boutons */
+.button-container {
+  display: inline-block;
+}
+
+.btn {
+  transition: all 0.3s ease-in-out;
+  font-family: "Dosis", sans-serif;
+  width: 100px;
+  height: 40px;
+  border-radius: 50px;
+  background-color: transparent;
+  box-shadow: 0 20px 30px -6px rgba(238, 103, 97, 0.5);
+  outline: none;
+  cursor: pointer;
+  border: none;
+  font-size: 0.8em; /* Taille de police relative */
+  color: white;
+  margin-right: 15px; /* Ajout de marge pour espacer les boutons */
+}
+
+.btn:hover {
+  transform: translateY(3px);
+  box-shadow: none;
+}
+
+.btn:active {
+  opacity: 0.5;
 }

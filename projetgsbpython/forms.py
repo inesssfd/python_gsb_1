@@ -30,16 +30,18 @@ class InscriptionForm(forms.ModelForm):
 
 
 class RapportForm(forms.ModelForm):
-    quantite = forms.IntegerField(min_value=1)  # Add a field for quantity
-    medicament = forms.ModelChoiceField(queryset=Medicament.objects.all(), empty_label=None)  # Medication selection field
+    quantite = forms.IntegerField(min_value=1)
+    medicament = forms.ModelChoiceField(queryset=Medicament.objects.all(), empty_label=None)
 
     class Meta:
         model = Rapport
-        fields = ['idvisiteur', 'daterapport', 'motif', 'bilan', 'idmedecin']
+        fields = ['idvisiteur', 'daterapport', 'motif', 'bilan', 'idmedecin', 'medicament']
         widgets = {
             'daterapport': forms.DateInput(attrs={'type': 'date'}),
             'idmedecin': forms.Select(attrs={'class': 'form-select'})
         }
+
+
 
     def __init__(self, *args, **kwargs):
         super(RapportForm, self).__init__(*args, **kwargs)

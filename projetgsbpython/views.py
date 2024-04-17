@@ -6,7 +6,9 @@ from .forms import InscriptionForm, RapportForm, VisiteurForm
 from .models import Visiteur, Medecin, Rapport,Medicament,MedicamentRapport
 from django.urls import reverse
 from django import forms
-from django.http import HttpResponseRedirect
+from django.contrib.auth import logout
+from django.db.models import Q
+from django.http import HttpResponseRedirect, HttpResponseForbidden
 def inscription(request):
     if request.method == 'POST':
         form = InscriptionForm(request.POST)
@@ -73,47 +75,17 @@ def create_rapport(request, visiteur_id):
     return render(request, 'create_rapport.html', {'visiteur_id': visiteur_id, 'form': form})
 
 
-def modifier_rapport(request, rapport_id):
-    rapport = get_object_or_404(Rapport, idrapport=rapport_id)
-    medicament_rapports = rapport.medicamentrapport_set.all()
-    all_medicaments = Medicament.objects.all()  # Récupérer tous les médicaments de la base de données
-    
-    if request.method == 'POST':
-        form = RapportForm(request.POST, instance=rapport)  # Création du formulaire avec les données POST et l'instance du rapport existant
-
-        if form.is_valid():
-            id_medecin = request.POST.get('idmedecin')
-            rapport.idmedecin_id = id_medecin
-            form.save(commit=False)
-            form.save()
-
-            # Mettre à jour les quantités des médicaments associés à ce rapport
-            for medicament_rapport in medicament_rapports:
-                quantite = request.POST.get(f'quantite_{medicament_rapport.id}')
-                medicament_rapport.quantite = quantite
-
-                # Mettre à jour l'ID du médicament dans MedicamentRapport
-                medicament_id = request.POST.get(f'medicament_{medicament_rapport.id}')  # Assurez-vous d'avoir un champ nommé medicament_ID pour chaque médicament_rapport
-                medicament_rapport.idmedicament_id = medicament_id
-
-                medicament_rapport.save()
-
-            messages.success(request, "Rapport modifié avec succès.")
-            return redirect('tableau_de_bord', visiteur_id=rapport.idvisiteur_id)
-        else:
-            print(form.errors)
-            messages.error(request, "Erreur lors de la modification du rapport. Veuillez réessayer.")
-    else:
-        form = RapportForm(instance=rapport)  # Création du formulaire avec l'instance du rapport existant
-
-    return render(request, 'modifier_rapport.html', {'rapport': rapport, 'form': form, 'medicament_rapports': medicament_rapports, 'all_medicaments': all_medicaments})
 
 def supprimer_rapport(request, rapport_id):
     rapport = get_object_or_404(Rapport, idrapport=rapport_id)
     visiteur_id = rapport.idvisiteur_id
+    
+    # Vérifier si le rapport appartient au visiteur connecté
+    if visiteur_id != request.visiteur.idvisiteur:  # Assurez-vous de remplacer request.visiteur par le moyen approprié d'obtenir l'utilisateur connecté dans votre application
+        return HttpResponseForbidden("Vous n'êtes pas autorisé à supprimer ce rapport.")
+    
     rapport.delete()
     return HttpResponseRedirect(reverse('tableau_de_bord', args=(visiteur_id,)))
-
 
 def index(request):
     return render(request, 'index.html')
@@ -149,6 +121,10 @@ def supprimer_visiteur(request, visiteur_id):
 
 def modifier_visiteur(request, visiteur_id):
     visiteur = get_object_or_404(Visiteur, idvisiteur=visiteur_id)
+    
+    if rapport.idvisiteur_id != request.visiteur.idvisiteur:  # Assurez-vous de remplacer request.visiteur par le moyen approprié d'obtenir l'utilisateur connecté dans votre application
+     return HttpResponseForbidden("Vous n'êtes pas autorisé à modifier ce rapport.")
+    
     if request.method == 'POST':
         form = VisiteurForm(request.POST, instance=visiteur)
         if form.is_valid():
@@ -158,3 +134,52 @@ def modifier_visiteur(request, visiteur_id):
     else:
         form = VisiteurForm(instance=visiteur)
     return render(request, 'modifier_visiteur.html', {'form': form})
+
+def modifier_rapport(request, rapport_id):
+    rapport = get_object_or_404(Rapport, idrapport=rapport_id)
+
+    if rapport.idvisiteur_id != request.user.id:  # Utilisez request.user au lieu de request.visiteur
+        return HttpResponseForbidden("Vous n'êtes pas autorisé à modifier ce rapport.")
+    
+    if request.method == 'POST':
+        form = RapportForm(request.POST, instance=rapport)
+        if form.is_valid():
+            form.save()
+
+            # Récupérer les données de la quantité et du médicament sélectionné
+            quantite = form.cleaned_data['quantite']
+            medicament = form.cleaned_data['medicament']
+
+            # Mettre à jour l'entrée dans la table MedicamentRapport associée à ce rapport
+            medicament_rapport = rapport.medicamentrapport_set.first()
+            if medicament_rapport:
+                medicament_rapport.quantite = quantite
+                medicament_rapport.idmedicament = medicament
+                medicament_rapport.save()
+            else:
+                # Si aucune entrée n'existe dans la table MedicamentRapport, créer une nouvelle entrée
+                MedicamentRapport.objects.create(idrapport=rapport, idmedicament=medicament, quantite=quantite)
+
+            messages.success(request, "Le rapport a été modifié avec succès.")
+            return redirect('tableau_de_bord', visiteur_id=rapport.idvisiteur_id)
+    else:
+        initial_data = {
+            'medicament': rapport.medicamentrapport_set.first().idmedicament if rapport.medicamentrapport_set.exists() else None,
+            'quantite': rapport.medicamentrapport_set.first().quantite if rapport.medicamentrapport_set.exists() else None
+        }
+        form = RapportForm(instance=rapport, initial=initial_data)
+    return render(request, 'modifier_rapport.html', {'form': form})
+
+def liste_medecins(request):
+    idmedecin = request.GET.get('idmedecin')
+    if idmedecin:
+        medecin = get_object_or_404(Medecin, idmedecin=idmedecin)
+        medecins = [medecin]
+    else:
+        medecins = Medecin.objects.all()
+    return render(request, 'liste_medecins.html', {'medecins': medecins})
+
+
+def deconnexion(request):
+    logout(request)
+    return redirect('index')
