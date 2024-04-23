@@ -22,18 +22,19 @@
                 <img src="{% static 'recherche.png' %}" alt="Votre Image" style="width: 30px; height: 30px;">
             </button>
         </form> 
-        <a href="{% url 'deconnexion' %}">Déconnexion</a>
-
-        <a href="{% url 'liste_medecins' %}" style="position: absolute; top: 10px; right: 140px;">
+        <a href="{% url 'deconnexion' %}"class="icon-container" style="position: absolute; top: 55px; right: 140px; ">
+            <img src="{% static 'deconnexion.png' %}" alt="Voir tous les médecins" style="width: 30px; height: 30px;">
+        </a>
+        <a href="{% url 'liste_medecins' %}"class="icon-container" style="position: absolute; top: 55px; right: 320px;">
             <img src="{% static 'docteur.png' %}" alt="Voir tous les médecins" style="width: 30px; height: 30px;">
         </a>
         <!-- Bouton pour accéder au profil du visiteur -->
-        <a href="{% url 'profil_visiteur' visiteur_id %}" style="position: absolute; top: 10px; right: 20px;">
+        <a href="{% url 'profil_visiteur' visiteur_id %}" class="icon-container"style="position: absolute; top: 55px; right: 200px;">
             <img src="{% static 'profil-de-lutilisateur.png' %}" alt="Profil Visiteur" style="width: 30px; height: 30px; display: block; margin: auto;">
         </a>
         
         <!-- Bouton pour créer un rapport -->
-        <a href="{% url 'create_rapport' visiteur_id %}" style="position: absolute; top: 10px; right: 80px;">
+        <a href="{% url 'create_rapport' visiteur_id %}" class="icon-container"style="position: absolute; top: 55px; right: 260px;">
             <img src="{% static 'signe-plus.png' %}" alt="Créer Rapport" style="width: 30px; height: 30px; display: block; margin: auto;">
         </a>
 

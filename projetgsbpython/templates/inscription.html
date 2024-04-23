@@ -17,13 +17,13 @@
         {% endfor %}
     </ul>
 {% endif %}
-
+<div class="Form">
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
     {% load crispy_forms_tags %}
     <button type="submit">Inscription</button>
 </form>
-
+</div>
 </body>
 </html>

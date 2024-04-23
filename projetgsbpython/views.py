@@ -80,10 +80,6 @@ def supprimer_rapport(request, rapport_id):
     rapport = get_object_or_404(Rapport, idrapport=rapport_id)
     visiteur_id = rapport.idvisiteur_id
     
-    # Vérifier si le rapport appartient au visiteur connecté
-    if visiteur_id != request.visiteur.idvisiteur:  # Assurez-vous de remplacer request.visiteur par le moyen approprié d'obtenir l'utilisateur connecté dans votre application
-        return HttpResponseForbidden("Vous n'êtes pas autorisé à supprimer ce rapport.")
-    
     rapport.delete()
     return HttpResponseRedirect(reverse('tableau_de_bord', args=(visiteur_id,)))
 
@@ -122,8 +118,6 @@ def supprimer_visiteur(request, visiteur_id):
 def modifier_visiteur(request, visiteur_id):
     visiteur = get_object_or_404(Visiteur, idvisiteur=visiteur_id)
     
-    if rapport.idvisiteur_id != request.visiteur.idvisiteur:  # Assurez-vous de remplacer request.visiteur par le moyen approprié d'obtenir l'utilisateur connecté dans votre application
-     return HttpResponseForbidden("Vous n'êtes pas autorisé à modifier ce rapport.")
     
     if request.method == 'POST':
         form = VisiteurForm(request.POST, instance=visiteur)
@@ -138,8 +132,6 @@ def modifier_visiteur(request, visiteur_id):
 def modifier_rapport(request, rapport_id):
     rapport = get_object_or_404(Rapport, idrapport=rapport_id)
 
-    if rapport.idvisiteur_id != request.user.id:  # Utilisez request.user au lieu de request.visiteur
-        return HttpResponseForbidden("Vous n'êtes pas autorisé à modifier ce rapport.")
     
     if request.method == 'POST':
         form = RapportForm(request.POST, instance=rapport)

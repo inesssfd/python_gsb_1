@@ -8,20 +8,23 @@
     <title>Connexion</title>
 </head>
 <body>
-    <h1>Connexion</h1>
-    {% if messages %}
-    
-        {% for message in messages %}
-            <p>{{ message }}</p>
-        {% endfor %}
-    {% endif %}
-    <form method="post">
-        {% csrf_token %}
-        <label for="login">Login :</label>
-        <input type="text" id="login" name="login" required><br>
-        <label for="mdp">Mot de passe :</label>
-        <input type="password" id="mdp" name="mdp" required><br>
-        <button type="submit">Se connecter</button>
-    </form>
+    <div class="container">
+        <div class="content">
+            <h1>Connexion</h1>
+            {% if messages %}
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+            <form method="post">
+                {% csrf_token %}
+                <label for="login">Login :</label>
+                <input type="text" id="login" name="login" required><br>
+                <label for="mdp">Mot de passe :</label>
+                <input type="password" id="mdp" name="mdp" required><br>
+                <button type="submit">Se connecter</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>

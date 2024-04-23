@@ -14,8 +14,19 @@ class InscriptionForm(forms.ModelForm):
     class Meta:
         model = Visiteur
         fields = ['nomvisiteur', 'prenomvisiteur', 'login', 'mdp', 'adressevisiteur', 'villevisiteur', 'cp_visiteur', 'dateembauchevisiteur']
+        labels = {
+            'nomvisiteur': 'Nom',
+            'prenomvisiteur': 'Prenom',
+            'login': 'login',
+            'mdp': 'mot de passe',
+            'adressevisiteur': 'Adresse',
+            'villevisiteur': 'Ville',
+            'cp_visiteur': 'code postal',
+            'dateembauchevisiteur': 'date embauche',
+        }
         widgets = {
             'dateembauchevisiteur': forms.DateInput(attrs={'type': 'date'}),
+            'mdp': forms.PasswordInput(),
         }
 
     def clean_login(self):
@@ -36,6 +47,13 @@ class RapportForm(forms.ModelForm):
     class Meta:
         model = Rapport
         fields = ['idvisiteur', 'daterapport', 'motif', 'bilan', 'idmedecin', 'medicament']
+        labels = {
+            'daterapport': 'Date du rapport',
+            'motif': 'Motif',
+            'bilan': 'Bilan',
+            'idmedecin': 'Médecin',
+            'medicament': 'Médicament',
+        }
         widgets = {
             'daterapport': forms.DateInput(attrs={'type': 'date'}),
             'idmedecin': forms.Select(attrs={'class': 'form-select'})

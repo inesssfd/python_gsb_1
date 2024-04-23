@@ -21,11 +21,14 @@
         <!-- Bouton pour supprimer le visiteur -->
         <form method="post" action="{% url 'supprimer_visiteur' visiteur.idvisiteur %}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce visiteur?');">
             {% csrf_token %}
-            <button type="submit">Supprimer le visiteur</button>
-        <button href="{% url 'modifier_visiteur' visiteur.idvisiteur %}">Modifier le profil</button>
-    
-    
-    </form>
+            <button type="submit" class="delete-button">
+                <img src="{% static 'supprimer.png' %}" alt="Supprimer le visiteur" style="width: 30px; height: 30px;">
+            </button>
+        </form>
+        
+        <a href="{% url 'modifier_visiteur' visiteur.idvisiteur %}">
+            <img src="{% static 'editer.png' %}" alt="Modifier le profil" style="width: 30px; height: 30px;">
+        </a>
     </div>
 </body>
 </html>

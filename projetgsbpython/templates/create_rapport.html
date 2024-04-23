@@ -9,11 +9,14 @@
     <title>Créer un rapport</title>
 </head>
 <body>
-    <h1>Créer un rapport</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Enregistrer</button>
-    </form>
+    <a href="{% url 'tableau_de_bord' visiteur_id=visiteur_id %}">Retour au tableau de bord</a>
+    <div class="Form"> <!-- Ajout de la classe RapportForm -->
+        <h1>Créer un rapport</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Enregistrer</button>
+        </form>
+    </div> <!-- Fermeture de la balise div -->
 </body>
 </html>

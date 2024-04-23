@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+    {% load static %}
     <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Liste des médecins</title>
 </head>
 <body>
     <h1>Liste des médecins</h1>
-
     <!-- Formulaire de recherche -->
     <form action="{% url 'liste_medecins' %}" method="GET">
         <label for="idmedecin">Sélectionner un médecin :</label>
@@ -17,7 +18,9 @@
                 <option value="{{ medecin.idmedecin }}">{{ medecin.nom }} {{ medecin.prenom }}</option>
             {% endfor %}
         </select>
-        <button type="submit">Rechercher</button>
+        <button type="submit" class="recherche-button">
+            <img src="{% static 'recherche.png' %}" alt="Votre Image" style="width: 30px; height: 30px;">
+        </button>
     </form>
 
     <ul>
