@@ -1,14 +1,23 @@
-# -*- coding: utf-8 -*-
 from django.core.exceptions import ObjectDoesNotExist
+# Import pour utiliser la fonctionnalité de messagerie de Django
 from django.contrib import messages
+# Imports liés à la gestion des vues dans Django
 from django.shortcuts import render, get_object_or_404, redirect
+# Imports des formulaires définis dans l'application
 from .forms import InscriptionForm, RapportForm, VisiteurForm
-from .models import Visiteur, Medecin, Rapport,Medicament,MedicamentRapport
+# Imports des modèles définis dans l'application
+from .models import Visiteur, Medecin, Rapport, Medicament, MedicamentRapport
+# Import de la fonction reverse pour générer des URLs à partir des noms des vues
 from django.urls import reverse
-from django import forms
+from django import forms# Import de la classe Form de Django pour accéder aux éléments liés aux formulaires
+# Import de la fonction logout de Django pour déconnecter l'utilisateur actuellement authentifié
 from django.contrib.auth import logout
+# Import de la classe Q de Django pour créer des requêtes complexes
 from django.db.models import Q
+# Import pour gérer les réponses HTTP et les erreurs 403
 from django.http import HttpResponseRedirect, HttpResponseForbidden
+
+
 def inscription(request):
     if request.method == 'POST':
         form = InscriptionForm(request.POST)
@@ -69,11 +78,10 @@ def create_rapport(request, visiteur_id):
             # Créer un enregistrement dans la table de jointure MedicamentRapport
             MedicamentRapport.objects.create(idrapport=rapport, idmedicament=medicament, quantite=quantite)
 
-            return redirect('tableau_de_bord', visiteur_id=visiteur_id)
+            return redirect('tableau_de_bord', visiteur_id=visiteur_id)  # Redirection vers le tableau de bord
     else:
         form = RapportForm(initial={'idvisiteur': visiteur_id})
     return render(request, 'create_rapport.html', {'visiteur_id': visiteur_id, 'form': form})
-
 
 
 def supprimer_rapport(request, rapport_id):
